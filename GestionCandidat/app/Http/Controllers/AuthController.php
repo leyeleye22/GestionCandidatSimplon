@@ -142,8 +142,6 @@ class AuthController extends Controller
             'telephone' => 'required|string|max:12|unique:candidats|regex:/^(77|78|70|75|76)[0-9]{7}$/',
             'dateNaissance' => 'required|date',
             'adresse' => 'required|string|max:255',
-            'formationDesiree' => 'required|string|max:255',
-            'accepted' => 'required|in:isAccept,isNotAccept',
             'role' => 'required|in:candidat,admin',
             'password' => 'required|string|min:6',
         ]);

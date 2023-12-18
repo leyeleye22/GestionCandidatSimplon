@@ -19,8 +19,6 @@ return new class extends Migration
             $table->string('telephone')->unique();
             $table->date('dateNaissance');
             $table->string('adresse');
-            $table->string('formationDesiree');
-            $table->enum('accepted', ['isAccept', 'isNotAccept']);
             $table->enum('role', ['candidat', 'admin']);
             $table->string('password');
             $table->timestamps();

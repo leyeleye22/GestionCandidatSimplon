@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('candidat_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('formation_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
+            $table->enum('accepted', ['isAccept', 'isNotAccept'])->default('isAccept');
             $table->timestamps();
         });
     }
