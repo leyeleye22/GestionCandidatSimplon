@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('formations', function (Blueprint $table) {
             $table->id();
+            $table->string('nomFormation');
+            $table->text('description');
+            $table->integer('duree');
+            $table->enum('status', ['en_cours', 'en_attente']);
             $table->timestamps();
         });
     }

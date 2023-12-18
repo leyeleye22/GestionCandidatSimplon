@@ -26,7 +26,6 @@ class AuthController extends Controller
         ]);
         $credentials = $request->only('email', 'password');
         $token = Auth::attempt($credentials);
-
         if (!$token) {
             return response()->json([
                 'message' => 'Unauthorized',
@@ -34,13 +33,20 @@ class AuthController extends Controller
         }
 
         $user = Auth::user();
-        return response()->json([
-            'user' => $user,
-            'authorization' => [
-                'token' => $token,
-                'type' => 'bearer',
-            ]
-        ]);
+        if ($user) {
+            return response()->json([
+                'user' => $user,
+                'authorization' => [
+                    'token' => $token,
+                    'type' => 'bearer',
+                ]
+            ]);
+        } else {
+            return response()->json([
+                'status' => 403,
+                'error' => 'erreur de connexion',
+            ]);
+        }
     }
     public function register(Request $request)
     {
@@ -48,7 +54,7 @@ class AuthController extends Controller
             'nom' => 'required|string|max:255',
             'prenom' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:candidats',
-            'telephone' => 'required|string|max:255|unique:candidats',
+            'telephone' => 'required|string|max:12|unique:candidats|regex:/^(77|78|70|75|76)[0-9]{7}$/',
             'dateNaissance' => 'required|date',
             'adresse' => 'required|string|max:255',
             'formationDesiree' => 'required|string|max:255',

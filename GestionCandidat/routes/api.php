@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CandidatController;
+use App\Http\Controllers\CandidatureController;
 use App\Http\Controllers\FormationController;
 
 /*
@@ -22,8 +23,19 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('register', 'register');
     Route::post('logout', 'logout');
     Route::post('refresh', 'refresh');
-    Route::post('ajout/formation', [FormationController::class, 'store']);
 });
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::controller(FormationController::class)->group(function () {
+    Route::get('list/formation', 'index');
+    Route::middleware('admin')->group(function () {
+        Route::post('ajout/formation', 'store');
+        Route::post('cloture/formation/{formation}', 'cloture');
+        Route::post('modifier/formation/{formation}', 'update');
+        Route::delete('supprimer/formation/{formation}', 'delete');
+    });
+});
+Route::controller(CandidatureController::class)->group(function () {
+    Route::post('revoquer/candiadture/{candiadture}/{formation}', 'delete');
+    Route::get('/show/candidature', 'index');
+    Route::post('candidater/{formation}', 'store');
+    Route::post('modifier/candiadture/{candiadture}', 'update');
 });

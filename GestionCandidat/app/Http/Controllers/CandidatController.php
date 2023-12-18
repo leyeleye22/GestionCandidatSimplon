@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateCandidatRequest;
 
 class CandidatController extends Controller
 {
+   
     /**
      * Display a listing of the resource.
      */
