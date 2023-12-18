@@ -18,6 +18,36 @@ class CandidatureController extends Controller
     /**
      * Display a listing of the resource.
      */
+       /**
+     * @OA\Get(
+     *     path="/show/candidature",
+     *     tags={"Candidatures"},
+     *     summary="Show list of candidatures",
+     *     description="Retrieves a list of all candidatures",
+     *     operationId="showCandidatureList",
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="List of candidatures retrieved successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="succes", type="integer", example=200),
+     *             @OA\Property(property="message", type="string", example="Liste des candidatures"),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="array",
+     *                 @OA\Items(ref="#/components/schemas/Candidature")
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Unauthenticated")
+     *         )
+     *     )
+     * )
+     */
     public function index()
     {
         return response()->json([
@@ -37,6 +67,54 @@ class CandidatureController extends Controller
 
     /**
      * Store a newly created resource in storage.
+     */
+      /**
+     * @OA\Post(
+     *     path="/candidater/{formation}",
+     *     tags={"Candidatures"},
+     *     summary="Apply for a formation",
+     *     description="Allows a user to apply for a specific formation",
+     *     operationId="applyForFormation",
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         name="formation",
+     *         in="path",
+     *         required=true,
+     *         description="ID of the formation to apply for",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Candidature created successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="integer", example=200),
+     *             @OA\Property(property="data", ref="#/components/schemas/Candidature")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=300,
+     *         description="Error: Candidature already exists",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="integer", example=300),
+     *             @OA\Property(property="message", type="string", example="Candidature already exists")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=403,
+     *         description="Forbidden: Unable to apply for the formation",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="integer", example=403),
+     *             @OA\Property(property="message", type="string", example="Impossible de candidater")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Unauthenticated")
+     *         )
+     *     )
+     * )
      */
     public function store(Request $request, Formation $formation)
     {
@@ -95,6 +173,60 @@ class CandidatureController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     */
+        /**
+     * @OA\Post(
+     *     path="/revoquer/candidature/{candidature}/{formation}",
+     *     tags={"Candidatures"},
+     *     summary="Revoke a candidature",
+     *     description="Revokes a candidature for a specific formation",
+     *     operationId="revokeCandidature",
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         name="candidature",
+     *         in="path",
+     *         required=true,
+     *         description="ID of the candidature to be revoked",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Parameter(
+     *         name="formation",
+     *         in="path",
+     *         required=true,
+     *         description="ID of the formation related to the candidature",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Candidature revoked successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="integer", example=200),
+     *             @OA\Property(property="message", type="string", example="Candidature annulée")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Error in revoking candidature",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="integer", example=400),
+     *             @OA\Property(property="message", type="string", example="Erreur d'annulation")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=403,
+     *         description="Forbidden",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Forbidden")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Unauthenticated")
+     *         )
+     *     )
+     * )
      */
     public function delete(Candidature $candiadture, Formation $formation)
     {
