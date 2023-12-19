@@ -39,4 +39,6 @@ Route::controller(CandidatureController::class)->group(function () {
 });
 Route::controller(CandidatController::class)->group(function () {
     Route::get('/show/candidat', 'index');
+    Route::get('/show/candidat/accepter', 'accepeter');
+    Route::get('/show/candidat/refuser', 'refuser');
 });
