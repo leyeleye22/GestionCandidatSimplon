@@ -345,6 +345,46 @@
                 ]
             }
         },
+        "/show/candidat": {
+            "get": {
+                "tags": [
+                    "Candidats"
+                ],
+                "summary": "Get all candidats",
+                "operationId": "7b733a883bff811442ef53dab13ad4ae",
+                "responses": {
+                    "200": {
+                        "description": "List of candidats",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Candidat"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Internal Server Error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/show/candidature": {
             "get": {
                 "tags": [

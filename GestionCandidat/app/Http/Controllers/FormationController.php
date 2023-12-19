@@ -12,7 +12,7 @@ class FormationController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['list/formation']]);
+        $this->middleware('auth:api, admin', ['except' => ['list/formation']]);
     }
     /**
      * Display a listing of the resource.

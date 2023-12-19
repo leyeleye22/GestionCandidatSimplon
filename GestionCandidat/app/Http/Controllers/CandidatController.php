@@ -8,13 +8,43 @@ use App\Http\Requests\UpdateCandidatRequest;
 
 class CandidatController extends Controller
 {
-   
+
     /**
      * Display a listing of the resource.
      */
+    /**
+ * @OA\Get(
+ *     path="/show/candidat",
+ *     summary="Get all candidats",
+ *     tags={"Candidats"},
+ *     @OA\Response(
+ *         response=200,
+ *         description="List of candidats",
+ *         @OA\JsonContent(
+ *             type="array",
+ *             @OA\Items(ref="#/components/schemas/Candidat")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=500,
+ *         description="Internal Server Error",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="error", type="string", example="Internal Server Error")
+ *         )
+ *     )
+ * )
+ */
     public function index()
     {
-        //
+        try {
+            $candidat = Candidat::all();
+            return response()->json([
+                'status_code' => 200,
+                'data' => $candidat
+            ]);
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage());
+        }
     }
 
     /**
@@ -22,7 +52,6 @@ class CandidatController extends Controller
      */
     public function register()
     {
-        
     }
 
     /**

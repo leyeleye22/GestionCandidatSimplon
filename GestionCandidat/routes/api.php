@@ -26,16 +26,17 @@ Route::controller(AuthController::class)->group(function () {
 });
 Route::controller(FormationController::class)->group(function () {
     Route::get('list/formation', 'index');
-    Route::middleware('admin')->group(function () {
-        Route::post('ajout/formation', 'store');
-        Route::post('cloture/formation/{formation}', 'cloture');
-        Route::post('modifier/formation/{formation}', 'update');
-        Route::delete('supprimer/formation/{formation}', 'delete');
-    });
+    Route::post('ajout/formation', 'store');
+    Route::post('cloture/formation/{formation}', 'cloture');
+    Route::post('modifier/formation/{formation}', 'update');
+    Route::delete('supprimer/formation/{formation}', 'delete');
 });
 Route::controller(CandidatureController::class)->group(function () {
     Route::post('revoquer/candiadture/{candiadture}/{formation}', 'delete');
     Route::get('/show/candidature', 'index');
     Route::post('candidater/{formation}', 'store');
     Route::post('modifier/candiadture/{candiadture}', 'update');
+});
+Route::controller(CandidatController::class)->group(function () {
+    Route::get('/show/candidat', 'index');
 });
