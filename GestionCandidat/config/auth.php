@@ -45,6 +45,11 @@ return [
             'provider' => 'candidats',
             'hash' => false,
         ],
+        'admin' => [
+            'driver' => 'jwt',
+            'provider' => 'admins',
+            'hash' => false,
+        ]
     ],
 
     /*

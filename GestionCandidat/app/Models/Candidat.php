@@ -19,8 +19,6 @@ class Candidat extends Model implements JWTSubject, AuthenticatableContract
         'telephone',
         'dateNaissance',
         'adresse',
-        'formationDesiree',
-        'accepted',
         'role',
         'password',
     ];

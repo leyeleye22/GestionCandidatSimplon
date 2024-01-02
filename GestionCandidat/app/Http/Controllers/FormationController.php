@@ -12,7 +12,13 @@ class FormationController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api, admin', ['except' => ['list/formation']]);
+        $this->middleware('auth:api');
+        $this->middleware(function ($request, $next) {
+            if ($request->user()->role !== 'admin') {
+                return response()->json(['error' => 'Acces refuser'], 403);
+            }
+            return $next($request);
+        })->except('list/formation');
     }
     /**
      * Display a listing of the resource.
@@ -93,13 +99,23 @@ class FormationController extends Controller
      */
     public function cloture(Formation $formation)
     {
-        $formation->status = "en_cours";
-        if ($formation->update()) {
+        if ($formation->status = "en_cours") {
             return response()->json([
                 'status' => 200,
-                'Formation' => 'Cloture/en cours',
+                'Message' => 'Formation Deja cloturer impossible de le cloturer encore',
+
 
             ]);
+        } else {
+            $formation->status = "en_cours";
+            if ($formation->update()) {
+                return response()->json([
+                    'status' => 200,
+                    'Message' => 'Formation Cloture avec Successfully',
+                    'Formation' => $formation
+
+                ]);
+            }
         }
     }
 
@@ -254,6 +270,7 @@ class FormationController extends Controller
         if ($formation) {
             return response()->json([
                 'status' => 200,
+                'message' => 'Formation updated successfully',
                 'Formation' => $formation,
 
             ]);

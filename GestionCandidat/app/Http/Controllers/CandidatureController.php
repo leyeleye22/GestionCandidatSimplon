@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Candidat;
+use App\Models\Formation;
 use App\Models\Candidature;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreCandidatureRequest;
 use App\Http\Requests\UpdateCandidatureRequest;
-use App\Models\Formation;
 
 class CandidatureController extends Controller
 {
@@ -18,7 +19,7 @@ class CandidatureController extends Controller
     /**
      * Display a listing of the resource.
      */
-       /**
+    /**
      * @OA\Get(
      *     path="/show/candidature",
      *     tags={"Candidatures"},
@@ -68,7 +69,7 @@ class CandidatureController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-      /**
+    /**
      * @OA\Post(
      *     path="/candidater/{formation}",
      *     tags={"Candidatures"},
@@ -135,10 +136,16 @@ class CandidatureController extends Controller
             } else {
                 $candidature = new Candidature();
                 $candidature->candidat_id = $user;
+                $personne = Candidat::where('id', $user)->first();
+                $formationname = Formation::where('id', $idFormation)->first();
+                // dd($personne);
                 $candidature->formation_id = $idFormation;
                 if ($candidature->save()) {
                     return response()->json([
                         'status' => 200,
+                        'Nom' => $personne->nom,
+                        'Prenom' => $personne->prenom,
+                        'Formation' => $formationname->nomFormation,
                         'data' => $candidature
                     ]);
                 } else {
@@ -174,7 +181,7 @@ class CandidatureController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-        /**
+    /**
      * @OA\Post(
      *     path="/revoquer/candidature/{candidature}/{formation}",
      *     tags={"Candidatures"},

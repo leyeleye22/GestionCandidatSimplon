@@ -63,15 +63,19 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'email' => 'required|string|email',
             'password' => 'required|string',
         ]);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+            // 422 est le code de statut "Unprocessable Entity" pour les erreurs de validation
+        }
         $credentials = $request->only('email', 'password');
         $token = Auth::attempt($credentials);
         if (!$token) {
             return response()->json([
-                'message' => 'Unauthorized',
+                'message' => 'Email or Password not found',
             ], 401);
         }
 
@@ -139,10 +143,13 @@ class AuthController extends Controller
             'nom' => 'required|string|max:255',
             'prenom' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:candidats',
-            'telephone' => 'required|string|max:12|unique:candidats|regex:/^(77|78|70|75|76)[0-9]{7}$/',
-            'dateNaissance' => 'required|date',
+            'telephone' => [
+                'required',
+                'string',
+                'regex:/^(77|76|78|70|75)\d{7}$/u',
+            ],
+            'dateNaissance' => 'required|date|before:-18 years',
             'adresse' => 'required|string|max:255',
-            'role' => 'required|in:candidat,admin',
             'password' => 'required|string|min:6',
         ]);
 
@@ -158,9 +165,7 @@ class AuthController extends Controller
             'telephone' => $request->telephone,
             'dateNaissance' => $request->dateNaissance,
             'adresse' => $request->adresse,
-            'formationDesiree' => $request->formationDesiree,
-            'accepted' => $request->accepted,
-            'role' => $request->role,
+            'role' => 'candidat',
             'password' => Hash::make($request->password),
         ]);
         return response()->json([

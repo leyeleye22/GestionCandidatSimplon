@@ -16,13 +16,11 @@ class isAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-      
-            if (Auth::check() && Auth::user()->role == 'admin') {
-                return $next($request);
-            }else{
-                return abort(403);
-            }
-            
 
+        if (Auth::check() && Auth::guard('candidat')->user()->role == 'admin') {
+            return $next($request);
+        } else {
+            return abort(403);
+        }
     }
 }
